@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4 text-primary">My Applications</h2>
+
+{% if applications %}
+
+    {% for application in applications %}
+
+        <div class="card mb-3 p-3 shadow-sm">
+
+            <h5>{{ application.job.title }}</h5>
+
+            <p class="text-muted">
+                {{ application.job.company }} | {{ application.job.location }}
+            </p>
+
+            <small>
+                Applied on: {{ application.applied_at }}
+            </small>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+<p>You have not applied for any jobs yet.</p>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

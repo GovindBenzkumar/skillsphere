@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+<h2 class="text-primary mb-4">Recruiter Dashboard</h2>
+
+<a href="{% url 'post_job' %}" class="btn btn-success mb-4">
+Post New Job
+</a>
+
+<h4>Your Posted Jobs</h4>
+
+{% for item in job_data %}
+
+<div class="card p-3 mb-3">
+
+<h5>{{ item.job.title }}</h5>
+
+<p class="text-muted">
+{{ item.job.company }} | {{ item.job.location }}
+</p>
+
+<p>
+Applicants: <strong>{{ item.applicant_count }}</strong>
+</p>
+
+<!-- View Applicants Button -->
+<a href="{% url 'view_applicants' item.job.id %}" class="btn btn-primary btn-sm">
+View Applicants
+</a>
+
+</div>
+
+{% empty %}
+
+<p>No jobs posted yet.</p>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

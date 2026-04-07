@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow p-4">
+
+<h2 class="text-primary mb-4 text-center">
+Verification Request
+</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+{% if user.profile.role == "candidate" %}
+
+<div class="mb-3">
+<label>Upload Skill Certificate</label>
+<input type="file" name="certificate" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Project Link (Optional)</label>
+<input type="url" name="project_link" class="form-control" placeholder="https://github.com/yourproject">
+</div>
+
+{% elif user.profile.role == "recruiter" %}
+
+<div class="mb-3">
+<label>Upload Company Verification Document</label>
+<input type="file" name="company_proof" class="form-control">
+</div>
+
+{% endif %}
+
+<button type="submit" class="btn btn-success w-100">
+Submit for Verification
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

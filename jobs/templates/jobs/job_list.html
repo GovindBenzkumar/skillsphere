@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.job-card{
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.job-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+</style>
+
+<h1 class="text-center mb-4">Available Jobs</h1>
+
+{% if profile.role == "recruiter" %} <a href="{% url 'post_job' %}" class="btn btn-primary mb-3">
+Post a Job </a>
+{% endif %}
+
+<div class="row">
+
+{% for item in job_matches %}
+
+<div class="col-md-6 col-lg-4 mb-4">
+
+<div class="card shadow-sm h-100 job-card">
+
+<div class="card-body">
+
+<h5 class="card-title">{{ item.job.title }}</h5>
+
+<h6 class="text-muted d-flex align-items-center">
+{{ item.job.company }}
+
+{% if item.job.recruiter.profile.is_verified %} <i class="bi bi-patch-check-fill text-primary ms-2"></i>
+{% endif %}
+
+</h6>
+
+<p class="text-muted small">
+{{ item.job.description }}
+</p>
+
+<p class="mt-2 mb-1">
+📍 {{ item.job.location }}
+</p>
+
+<p class="mb-1">
+💰 {{ item.job.salary }}
+</p>
+
+<span class="badge bg-primary">
+{{ item.job.job_type }}
+</span>
+
+<hr>
+
+<div>
+{% for skill in item.job.skills.all %}
+<span class="badge bg-secondary me-1">
+{{ skill.name }}
+</span>
+{% endfor %}
+</div>
+
+<hr>
+
+<p>
+<span class="badge bg-success">
+Match: {{ item.match }}%
+</span>
+</p>
+
+{% if user.is_authenticated %}
+
+{% if item.job.id in applied_jobs %}
+
+<button class="btn btn-secondary mt-2" disabled>
+Already Applied
+</button>
+
+{% else %}
+
+<a href="{% url 'apply_job' item.job.id %}" class="btn btn-success mt-2">
+Apply
+</a>
+
+{% endif %}
+
+{% else %}
+
+<a href="{% url 'login' %}" class="btn btn-warning mt-2">
+Login to Apply
+</a>
+
+{% endif %}
+
+</div>
+</div>
+</div>
+
+{% empty %}
+
+<p>No jobs available.</p>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
